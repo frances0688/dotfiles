@@ -18,11 +18,10 @@ zsh -c "$(curl -fsSL https://raw.githubusercontent.com/frances0688/dotfiles/trun
 |------|-----|------|
 | 1 | `xcode-select --install` | Xcode Command Line Tools |
 | 2 | Homebrew install script | [Homebrew](https://brew.sh) (if missing) |
-| 3 | `brew install --cask` | 1Password, iTerm2, Google Chrome |
-| 4 | `brew bundle` (`install/Brewfile`) | CLI tools and remaining apps (see below) |
-| 5 | Oh My Zsh install script | [Oh My Zsh](https://ohmyzsh.sh) (if missing) |
-| 6 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
-| 7 | Directory setup | `~/.nvm`, `~/.pyenv`, 1Password agent symlink |
+| 3 | `brew bundle` (`install/Brewfile`) | CLI tools and apps (see below) |
+| 4 | Oh My Zsh install script | [Oh My Zsh](https://ohmyzsh.sh) (if missing) |
+| 5 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
+| 6 | Directory setup | `~/.nvm`, `~/.pyenv`, 1Password agent symlink |
 
 Existing regular files are backed up to `*.bak` before symlinking.
 
@@ -32,21 +31,16 @@ Existing regular files are backed up to `*.bak` before symlinking.
 
 ### GUI apps (Homebrew casks)
 
-Installed explicitly in `install/setup.zsh`:
-
-| App | Cask | Method |
-|-----|------|--------|
-| 1Password | `1password` | `brew install --cask` |
-| iTerm2 | `iterm2` | `brew install --cask` |
-| Google Chrome | `google-chrome` | `brew install --cask` |
-
 Installed via `install/Brewfile` (`brew bundle`):
 
 | App | Cask |
 |-----|------|
+| 1Password | `1password` |
 | 1Password CLI | `1password-cli` |
 | Cursor | `cursor` |
 | Docker Desktop | `docker-desktop` |
+| Google Chrome | `google-chrome` |
+| iTerm2 | `iterm2` |
 
 ### CLI tools (Homebrew formulae)
 

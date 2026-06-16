@@ -7,11 +7,13 @@ brew "pyenv"
 brew "goenv"
 brew "wget"
 
-# GUI applications (1password, iterm2, google-chrome installed in install/setup.zsh)
-
+# GUI applications
+cask "1password"
 cask "1password-cli"
 cask "cursor"
 cask "docker-desktop"
+cask "google-chrome"
+cask "iterm2"
 
 # Dotfiles tooling
 brew "stow"

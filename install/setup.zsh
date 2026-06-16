@@ -31,15 +31,9 @@ ensure_homebrew() {
   fi
 }
 
-install_gui_apps() {
-  log "Installing 1Password, iTerm2, and Google Chrome (Homebrew casks)..."
-  brew install --cask 1password iterm2 google-chrome
-}
-
 install_packages() {
+  log "Installing Homebrew packages and casks..."
   brew update
-  install_gui_apps
-  log "Installing remaining Homebrew packages..."
   brew bundle --file="$DOTFILES_DIR/install/Brewfile"
 }
 
