@@ -1,0 +1,13 @@
+[user]
+	name = Frances Morales Velilla
+	email = frances0688@gmail.com
+[init]
+	defaultBranch = trunk
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+
+# user.signingkey is set locally by github-ssh-setup (1Password SSH key).
