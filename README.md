@@ -19,9 +19,10 @@ zsh -c "$(curl -fsSL https://raw.githubusercontent.com/frances0688/dotfiles/trun
 | 1 | `xcode-select --install` | Xcode Command Line Tools |
 | 2 | Homebrew install script | [Homebrew](https://brew.sh) (if missing) |
 | 3 | `brew bundle` (`install/Brewfile`) | CLI tools and apps (see below) |
-| 4 | Oh My Zsh install script | [Oh My Zsh](https://ohmyzsh.sh) (if missing) |
-| 5 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
-| 6 | Directory setup | `~/.nvm`, `~/.pyenv`, 1Password agent symlink |
+| 4 | `npm install -g mongosh` | MongoDB Shell via nvm Node (not Homebrew node) |
+| 5 | Oh My Zsh install script | [Oh My Zsh](https://ohmyzsh.sh) (if missing) |
+| 6 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
+| 7 | Directory setup | `~/.nvm`, `~/.pyenv`, 1Password agent symlink |
 
 Existing regular files are backed up to `*.bak` before symlinking.
 
@@ -55,7 +56,34 @@ Installed via `install/Brewfile` (`brew bundle`):
 | pyenv | `pyenv` | Python version manager |
 | goenv | `goenv` | Go version manager |
 | wget | `wget` | File downloads |
+| xz | `xz` | Compression (pyenv build dependency) |
+| GNU getopt | `gnu-getopt` | CLI option parsing |
+| MongoDB Database Tools | `mongodb/brew/mongodb-database-tools` | `mongodump`, `mongoimport`, etc. |
 | GNU Stow | `stow` | Symlink management (optional tooling) |
+
+### MongoDB
+
+| Tool | Method | Notes |
+|------|--------|-------|
+| Database Tools | `brew bundle` via `mongodb/brew` tap | Installed from Brewfile |
+| mongosh | `npm install -g mongosh` in `setup.zsh` | Uses **nvm Node**, not Homebrew `node` |
+
+The `mongodb/brew` tap is added and trusted during install. **mongodb-community**, **mysql**, and **ncurses** are intentionally excluded.
+
+If Node is not installed yet when bootstrap runs:
+
+```bash
+nvm install --lts
+npm install -g mongosh
+```
+
+To install mongosh manually without Homebrew node (same approach):
+
+```bash
+brew install mongosh --ignore-dependencies   # skips brew node; needs nvm node on PATH
+# or
+npm install -g mongosh                       # recommended with nvm
+```
 
 ---
 
@@ -135,6 +163,7 @@ These require your accounts and secrets — they are not automated:
 3. **GitHub CLI:** Run `gh auth login`
 4. **Cursor:** Cmd+Shift+P → “Install 'cursor' command in PATH”
 5. **Node / Python / Go:** Install runtimes as needed (`nvm install --lts`, `pyenv install`, etc.)
+6. **mongosh:** Runs automatically if Node is available; otherwise `nvm install --lts && npm install -g mongosh`
 
 ---
 
