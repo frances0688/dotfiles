@@ -24,7 +24,8 @@ zsh -c "$(curl -fsSL https://raw.githubusercontent.com/frances0688/dotfiles/trun
 | 6 | `nvm` / `pyenv` / `goenv` | Latest stable Node LTS, Python 3.x, and Go |
 | 7 | `npm install -g mongosh` | MongoDB Shell via nvm Node |
 | 8 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
-| 9 | Directory setup | `~/.nvm`, `~/.pyenv`, `~/.goenv`, 1Password agent symlink |
+| 9 | Terminal fonts | FiraCode Nerd Font in iTerm2 + Cursor (automated) |
+| 10 | Directory setup | `~/.nvm`, `~/.pyenv`, `~/.goenv`, 1Password agent symlink |
 
 Existing regular files are backed up to `*.bak` before symlinking.
 
@@ -46,20 +47,7 @@ Installed via `install/Brewfile` (`brew bundle`):
 | iTerm2 | `iterm2` |
 | FiraCode Nerd Font | `font-fira-code-nerd-font` |
 
-After install, set **FiraCode Nerd Font** in iTerm2 (Profiles → Text → Font).
-
-**Cursor** has no separate font picker — use Settings JSON:
-
-1. `Cmd+Shift+P` → **Preferences: Open User Settings (JSON)**
-2. Add:
-
-```json
-"terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace"
-```
-
-Or search settings (`Cmd+,`) for **Terminal › Integrated: Font Family**.
-
-This repo ships the same config in `config/cursor/settings.json` (applied on bootstrap if no settings exist).
+See [Terminal fonts](#terminal-fonts) — iTerm2 and Cursor are configured automatically during install.
 
 ### CLI tools (Homebrew formulae)
 
@@ -107,6 +95,65 @@ Installed via `install/Brewfile` (`brew bundle`):
 | mongosh | `npm install -g mongosh` in `setup.zsh` | Uses **nvm Node**, not Homebrew `node` or `mongosh` |
 
 The `mongodb/brew` tap is added and trusted during install.
+
+---
+
+## Terminal fonts
+
+Powerlevel10k uses **Nerd Font icons**. This repo installs and configures **FiraCode Nerd Font** automatically.
+
+### What gets automated
+
+| Step | Script | Action |
+|------|--------|--------|
+| 1 | `brew bundle` | Installs `font-fira-code-nerd-font` cask |
+| 2 | `install/configure-terminal-fonts.py` | Sets iTerm2 Default profile font |
+| 3 | same | Installs iTerm2 Dynamic Profile (`config/iterm2/DynamicProfiles/dotfiles-font.json`) |
+| 4 | same | Merges Cursor `terminal.integrated.fontFamily` into settings.json |
+| 5 | `runcom/.p10k.zsh` | Enables `nerdfont-complete` mode for icons |
+
+Run during every `install/setup.zsh` (including `make link`).
+
+### Re-run font setup only
+
+```bash
+cd ~/.dotfiles
+make fonts
+# or
+python3 install/configure-terminal-fonts.py
+```
+
+### After install
+
+1. **Quit and reopen iTerm2** (required for plist changes)
+2. **Open a new terminal tab in Cursor** (integrated terminal caches the font)
+
+### Manual verification
+
+| App | Expected setting |
+|-----|------------------|
+| **iTerm2** | Settings → Profiles → Text → Font → **FiraCode Nerd Font** (14 pt) |
+| **Cursor** | `Cmd+,` → search **Terminal › Integrated: Font Family** → `'FiraCode Nerd Font', monospace` |
+
+Or open Cursor settings JSON (`Cmd+Shift+P` → **Preferences: Open User Settings (JSON)**):
+
+```json
+"terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace",
+"terminal.integrated.fontSize": 14
+```
+
+Reference copy: `config/cursor/settings.json`
+
+### Troubleshooting empty icon boxes
+
+Icons render as empty rectangles when the terminal is not using a Nerd Font:
+
+1. Confirm install: `brew list --cask font-fira-code-nerd-font`
+2. Re-run: `make -C ~/.dotfiles fonts`
+3. Restart both terminals (see above)
+4. Confirm `~/.p10k.zsh` is symlinked and sets `POWERLEVEL9K_MODE=nerdfont-complete`
+
+Alternative font: `font-meslo-lg-nerd-font` (Powerlevel10k default) — update `install/fonts.conf` and re-run font setup.
 
 ---
 
@@ -206,8 +253,9 @@ To refresh packages and re-link configs on an existing machine:
 
 ```bash
 cd ~/.dotfiles
-make macos          # brew bundle + re-link configs + secret scan
-make link           # re-link configs only
+make macos          # brew bundle + re-link configs + fonts + secret scan
+make link           # re-link configs + fonts
+make fonts          # iTerm2 + Cursor font setup only
 ```
 
 ---
@@ -218,10 +266,16 @@ make link           # re-link configs only
 .dotfiles/
 ├── remote-install.zsh       # One-line install entry point
 ├── install/
-│   ├── setup.zsh            # Full bootstrap script
-│   └── Brewfile             # Homebrew formulae and casks
-├── runcom/                  # Shell rc files (.zshrc, .gitconfig)
-├── config/ssh/              # SSH config (no private keys)
+│   ├── setup.zsh                      # Full bootstrap script
+│   ├── Brewfile                       # Homebrew formulae and casks
+│   ├── fonts.conf                     # Font name/size constants
+│   ├── fonts.zsh                      # Font install helpers
+│   └── configure-terminal-fonts.py    # iTerm2 + Cursor font automation
+├── config/
+│   ├── cursor/settings.json           # Cursor terminal font defaults
+│   ├── iterm2/DynamicProfiles/        # iTerm2 font profile overlay
+│   └── ssh/                           # SSH config (no private keys)
+├── runcom/                            # .zshrc, .gitconfig, .p10k.zsh
 ├── oh-my-zsh/custom/        # OMZ plugins and snippets
 ├── local/bin/               # Personal scripts
 ├── bin/check-secrets        # Pre-commit secret scanner
