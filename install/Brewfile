@@ -6,6 +6,12 @@ brew "nvm"
 brew "pyenv"
 brew "goenv"
 brew "wget"
+brew "xz"
+brew "gnu-getopt"
+
+# MongoDB (tap required; mongosh installed via npm in setup.zsh — uses nvm Node)
+tap "mongodb/brew"
+brew "mongodb/brew/mongodb-database-tools"
 
 # GUI applications
 cask "1password"
