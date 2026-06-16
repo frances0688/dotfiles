@@ -11,7 +11,7 @@ brew "wget"
 
 cask "1password-cli"
 cask "cursor"
-cask "docker"
+cask "docker-desktop"
 
 # Dotfiles tooling
 brew "stow"

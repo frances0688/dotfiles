@@ -46,7 +46,7 @@ Installed via `install/Brewfile` (`brew bundle`):
 |-----|------|
 | 1Password CLI | `1password-cli` |
 | Cursor | `cursor` |
-| Docker Desktop | `docker` |
+| Docker Desktop | `docker-desktop` |
 
 ### CLI tools (Homebrew formulae)
 
