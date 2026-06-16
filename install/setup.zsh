@@ -34,7 +34,31 @@ ensure_homebrew() {
 install_packages() {
   log "Installing Homebrew packages and casks..."
   brew update
+  if ! brew tap | rg -q '^mongodb/brew$'; then
+    brew tap mongodb/brew
+  fi
+  brew trust mongodb/brew 2>/dev/null || true
   brew bundle --file="$DOTFILES_DIR/install/Brewfile"
+}
+
+install_mongosh() {
+  log "Installing mongosh via npm (uses nvm Node, not Homebrew node)..."
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  local nvm_sh="${NVM_HOMEBREW:-${HOMEBREW_PREFIX:-$(brew --prefix 2>/dev/null)}/opt/nvm/nvm.sh}"
+  [[ -s "$nvm_sh" ]] && . "$nvm_sh"
+
+  if command -v mongosh &>/dev/null; then
+    warn "mongosh already installed, skipping."
+    return 0
+  fi
+
+  if ! command -v node &>/dev/null; then
+    warn "Node not available yet. After install, run:"
+    warn "  nvm install --lts && npm install -g mongosh"
+    return 0
+  fi
+
+  npm install -g mongosh
 }
 
 install_oh_my_zsh() {
@@ -110,6 +134,7 @@ ensure_homebrew
 if ! $LINK_ONLY; then
   install_packages
   install_oh_my_zsh
+  install_mongosh
 fi
 link_runcom
 link_oh_my_zsh_custom
