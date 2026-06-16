@@ -65,7 +65,7 @@ All config files live in this repo and are symlinked into place by `install/setu
 
 ### Shell — `runcom/.zshrc` → `~/.zshrc`
 
-- **Theme:** robbyrussell
+- **Theme:** dst
 - **PATH:** `~/.local/bin`
 - **Oh My Zsh plugins:**
 
