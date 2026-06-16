@@ -1,0 +1,19 @@
+# Homebrew formulae
+brew "git"
+brew "gh"
+brew "jq"
+brew "nvm"
+brew "pyenv"
+brew "goenv"
+brew "wget"
+
+# GUI applications
+cask "1password"
+cask "1password-cli"
+cask "cursor"
+cask "docker"
+cask "google-chrome"
+cask "iterm2"
+
+# Dotfiles tooling
+brew "stow"
