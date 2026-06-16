@@ -43,22 +43,60 @@ install_packages() {
 
 install_mongosh() {
   log "Installing mongosh via npm (uses nvm Node, not Homebrew node)..."
-  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
-  local nvm_sh="${NVM_HOMEBREW:-${HOMEBREW_PREFIX:-$(brew --prefix 2>/dev/null)}/opt/nvm/nvm.sh}"
-  [[ -s "$nvm_sh" ]] && . "$nvm_sh"
-
-  if command -v mongosh &>/dev/null; then
-    warn "mongosh already installed, skipping."
-    return 0
-  fi
+  load_nvm
 
   if ! command -v node &>/dev/null; then
-    warn "Node not available yet. After install, run:"
-    warn "  nvm install --lts && npm install -g mongosh"
+    warn "Node not available; skipping mongosh install."
     return 0
   fi
 
   npm install -g mongosh
+}
+
+load_nvm() {
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  mkdir -p "$NVM_DIR"
+  local nvm_prefix="${HOMEBREW_PREFIX:-$(brew --prefix 2>/dev/null)}/opt/nvm"
+  if [[ -d "$nvm_prefix" && ! -e "$NVM_DIR/nvm.sh" ]]; then
+    ln -sf "$nvm_prefix/nvm.sh" "$NVM_DIR/nvm.sh"
+  fi
+  local nvm_sh="${NVM_HOMEBREW:-$nvm_prefix/nvm.sh}"
+  [[ -s "$nvm_sh" ]] && . "$nvm_sh"
+}
+
+load_pyenv() {
+  export PYENV_ROOT="${PYENV_ROOT:-$HOME/.pyenv}"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  command -v pyenv &>/dev/null || return 1
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+}
+
+load_goenv() {
+  export GOENV_ROOT="${GOENV_ROOT:-$HOME/.goenv}"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  command -v goenv &>/dev/null || return 1
+  eval "$(goenv init -)"
+}
+
+install_runtimes() {
+  log "Installing latest stable Node.js (nvm LTS)..."
+  load_nvm
+  nvm install --lts --default
+
+  log "Installing latest stable Python (pyenv)..."
+  load_pyenv
+  local latest_python
+  latest_python="$(pyenv install --list | rg -E '^\s+3\.\d+\.\d+$' | tr -d ' ' | tail -1)"
+  pyenv install -s "$latest_python"
+  pyenv global "$latest_python"
+
+  log "Installing latest stable Go (goenv)..."
+  load_goenv
+  local latest_go
+  latest_go="$(goenv install --list | rg -E '^\s+\d+\.\d+\.\d+\s*$' | tr -d ' ' | tail -1)"
+  goenv install -s "$latest_go"
+  goenv global "$latest_go"
 }
 
 install_oh_my_zsh() {
@@ -123,7 +161,7 @@ link_ssh_config() {
 
 setup_version_managers() {
   log "Creating version manager directories..."
-  mkdir -p "$HOME/.nvm" "$HOME/.pyenv"
+  mkdir -p "$HOME/.nvm" "$HOME/.pyenv" "$HOME/.goenv"
   mkdir -p "$HOME/.1password"
   ln -sf "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" \
     "$HOME/.1password/agent.sock" 2>/dev/null || true
@@ -134,13 +172,17 @@ ensure_homebrew
 if ! $LINK_ONLY; then
   install_packages
   install_oh_my_zsh
+  setup_version_managers
+  install_runtimes
   install_mongosh
 fi
 link_runcom
 link_oh_my_zsh_custom
 link_local_bin
 link_ssh_config
-setup_version_managers
+if $LINK_ONLY; then
+  setup_version_managers
+fi
 
 log "Bootstrap complete."
 warn "Next steps: create a 1Password SSH key, then run: github-ssh-setup"
