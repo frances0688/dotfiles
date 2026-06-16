@@ -20,10 +20,11 @@ zsh -c "$(curl -fsSL https://raw.githubusercontent.com/frances0688/dotfiles/trun
 | 2 | Homebrew install script | [Homebrew](https://brew.sh) (if missing) |
 | 3 | `brew bundle` (`install/Brewfile`) | CLI tools, libraries, and apps (see below) |
 | 4 | Oh My Zsh install script | [Oh My Zsh](https://ohmyzsh.sh) (if missing) |
-| 5 | `nvm` / `pyenv` / `goenv` | Latest stable Node LTS, Python 3.x, and Go |
-| 6 | `npm install -g mongosh` | MongoDB Shell via nvm Node |
-| 7 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
-| 8 | Directory setup | `~/.nvm`, `~/.pyenv`, `~/.goenv`, 1Password agent symlink |
+| 5 | Powerlevel10k clone | Theme to `$ZSH_CUSTOM/themes/powerlevel10k` |
+| 6 | `nvm` / `pyenv` / `goenv` | Latest stable Node LTS, Python 3.x, and Go |
+| 7 | `npm install -g mongosh` | MongoDB Shell via nvm Node |
+| 8 | Symlinks | Dotfiles into `~` (see [Configuration](#configuration)) |
+| 9 | Directory setup | `~/.nvm`, `~/.pyenv`, `~/.goenv`, 1Password agent symlink |
 
 Existing regular files are backed up to `*.bak` before symlinking.
 
@@ -99,7 +100,8 @@ All config files live in this repo and are symlinked into place by `install/setu
 
 ### Shell — `runcom/.zshrc` → `~/.zshrc`
 
-- **Theme:** dst
+- **Theme:** [Powerlevel10k](https://github.com/romkatv/powerlevel10k) with dst color palette (`runcom/.p10k.zsh`)
+- **Colors:** magenta user, yellow host, bold blue path, green git/time, red errors/dirty git
 - **PATH:** `~/.local/bin`
 - **Oh My Zsh plugins:**
 
