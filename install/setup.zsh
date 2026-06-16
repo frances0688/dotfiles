@@ -195,6 +195,9 @@ link_runcom
 link_oh_my_zsh_custom
 link_local_bin
 link_ssh_config
+if ! $LINK_ONLY; then
+  warn "Set terminal font to 'FiraCode Nerd Font' in iTerm2 and Cursor (Settings → Terminal → Font)."
+fi
 if $LINK_ONLY; then
   setup_version_managers
 fi

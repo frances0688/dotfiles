@@ -44,6 +44,9 @@ Installed via `install/Brewfile` (`brew bundle`):
 | Docker Desktop | `docker-desktop` |
 | Google Chrome | `google-chrome` |
 | iTerm2 | `iterm2` |
+| FiraCode Nerd Font | `font-fira-code-nerd-font` |
+
+After install, set **FiraCode Nerd Font** in iTerm2 (Profiles → Text → Font) and Cursor (Settings → Terminal → Font) for Powerlevel10k icons.
 
 ### CLI tools (Homebrew formulae)
 
@@ -101,6 +104,7 @@ All config files live in this repo and are symlinked into place by `install/setu
 ### Shell — `runcom/.zshrc` → `~/.zshrc`
 
 - **Theme:** [Powerlevel10k](https://github.com/romkatv/powerlevel10k) with dst color palette (`runcom/.p10k.zsh`)
+- **Font:** FiraCode Nerd Font (`font-fira-code-nerd-font` cask)
 - **Colors:** magenta user, yellow host, bold blue path, green git/time, red errors/dirty git
 - **PATH:** `~/.local/bin`
 - **Oh My Zsh plugins:**
