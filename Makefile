@@ -2,7 +2,7 @@ DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 HOMEBREW_PREFIX := $(shell [ -d /opt/homebrew ] && echo /opt/homebrew || echo /usr/local)
 export PATH := $(HOMEBREW_PREFIX)/bin:$(DOTFILES_DIR)/bin:$(HOME)/.local/bin:$(PATH)
 
-.PHONY: all macos link packages check-secrets bootstrap
+.PHONY: all macos link packages check-secrets bootstrap fonts
 
 all: macos
 
@@ -14,6 +14,9 @@ packages:
 
 link:
 	zsh $(DOTFILES_DIR)/install/setup.zsh --link-only
+
+fonts:
+	python3 $(DOTFILES_DIR)/install/configure-terminal-fonts.py
 
 check-secrets:
 	$(DOTFILES_DIR)/bin/check-secrets

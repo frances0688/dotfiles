@@ -1,0 +1,14 @@
+{
+  "Profiles": [
+    {
+      "Name": "Default",
+      "Normal Font": "FiraCode Nerd Font 14",
+      "Non Ascii Font": "FiraCode Nerd Font 14",
+      "Use Non-ASCII Font": false,
+      "Use Bold Font": false,
+      "Use Italic Font": false,
+      "Horizontal Spacing": 1,
+      "Vertical Spacing": 1
+    }
+  ]
+}

@@ -3,6 +3,8 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 export DOTFILES_DIR
+source "$DOTFILES_DIR/install/fonts.conf"
+source "$DOTFILES_DIR/install/fonts.zsh"
 LINK_ONLY=false
 [[ "${1:-}" == "--link-only" ]] && LINK_ONLY=true
 
@@ -173,23 +175,6 @@ link_ssh_config() {
   chmod 600 "$HOME/.ssh/config"
 }
 
-link_cursor_settings() {
-  local src="$DOTFILES_DIR/config/cursor/settings.json"
-  local dest="$HOME/Library/Application Support/Cursor/User/settings.json"
-  if [[ ! -f "$src" ]]; then
-    return 0
-  fi
-  log "Configuring Cursor terminal font..."
-  mkdir -p "${dest:h}"
-  if [[ ! -f "$dest" ]]; then
-    cp "$src" "$dest"
-    return 0
-  fi
-  if ! rg -q 'terminal.integrated.fontFamily' "$dest" 2>/dev/null; then
-    warn "Add terminal font to Cursor settings (see config/cursor/settings.json)"
-  fi
-}
-
 setup_version_managers() {
   log "Creating version manager directories..."
   mkdir -p "$HOME/.nvm" "$HOME/.pyenv" "$HOME/.goenv"
@@ -212,14 +197,13 @@ link_runcom
 link_oh_my_zsh_custom
 link_local_bin
 link_ssh_config
-link_cursor_settings
-if ! $LINK_ONLY; then
-  warn "Restart Cursor terminal tabs after font changes (kill and open new terminal)."
-fi
+configure_terminal_fonts
+
 if $LINK_ONLY; then
   setup_version_managers
 fi
 
 log "Bootstrap complete."
+print_font_instructions
 warn "Next steps: create a 1Password SSH key, then run: github-ssh-setup"
 warn "Then authenticate GitHub CLI: gh auth login"

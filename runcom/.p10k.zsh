@@ -1,4 +1,5 @@
 # Powerlevel10k config — dst color palette
+# Requires FiraCode Nerd Font (install/configure-terminal-fonts.py sets iTerm2 + Cursor)
 # user: magenta | host: yellow | path: bold blue | git: green/red | time: green
 
 'builtin' 'local' '-a' 'p10k_config_opts'
