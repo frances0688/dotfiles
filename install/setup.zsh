@@ -109,6 +109,20 @@ install_oh_my_zsh() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
+install_powerlevel10k() {
+  local theme_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+  mkdir -p "${theme_dir:h}"
+
+  if [[ -d "$theme_dir/.git" ]]; then
+    log "Updating Powerlevel10k theme..."
+    git -C "$theme_dir" pull --ff-only 2>/dev/null || true
+    return 0
+  fi
+
+  log "Installing Powerlevel10k theme..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$theme_dir"
+}
+
 backup_if_regular_file() {
   local target="$1"
   if [[ -f "$target" && ! -L "$target" ]]; then
@@ -172,6 +186,7 @@ ensure_homebrew
 if ! $LINK_ONLY; then
   install_packages
   install_oh_my_zsh
+  install_powerlevel10k
   setup_version_managers
   install_runtimes
   install_mongosh

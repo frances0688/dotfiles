@@ -4,7 +4,7 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="dst"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(
   git
@@ -18,5 +18,8 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# Powerlevel10k (dst color palette — see ~/.p10k.zsh)
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 export PATH="$HOME/.local/bin:$PATH"
