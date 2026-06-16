@@ -9,6 +9,17 @@ brew "wget"
 brew "xz"
 brew "gnu-getopt"
 
+# Build and library dependencies
+brew "autoconf"
+brew "brotli"
+brew "c-ares"
+brew "ca-certificates"
+brew "gettext"
+brew "icu4c@78"
+brew "oniguruma"
+brew "protobuf"
+brew "readline"
+
 # MongoDB (tap required; mongosh installed via npm in setup.zsh — uses nvm Node)
 tap "mongodb/brew"
 brew "mongodb/brew/mongodb-database-tools"
