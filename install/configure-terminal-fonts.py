@@ -15,7 +15,8 @@ CURSOR_FONT = f"'{FONT_FAMILY}', monospace"
 
 HOME = Path.home()
 ITERM_PLIST = HOME / "Library/Preferences/com.googlecode.iterm2.plist"
-CURSOR_SETTINGS = HOME / "Library/Application Support/Cursor/User/settings.json"
+CURSOR_SETTINGS = DOTFILES / "config/cursor/settings.json"
+CURSOR_SETTINGS_LIVE = HOME / "Library/Application Support/Cursor/User/settings.json"
 DYNAMIC_PROFILES_DIR = HOME / "Library/Application Support/iTerm2/DynamicProfiles"
 DOTFILES = Path(__file__).resolve().parent.parent
 
@@ -70,6 +71,7 @@ def configure_cursor_settings() -> bool:
     }
 
     CURSOR_SETTINGS.parent.mkdir(parents=True, exist_ok=True)
+    CURSOR_SETTINGS_LIVE.parent.mkdir(parents=True, exist_ok=True)
     existing: dict = {}
     if CURSOR_SETTINGS.exists():
         try:
@@ -80,6 +82,8 @@ def configure_cursor_settings() -> bool:
 
     existing.update(patch)
     CURSOR_SETTINGS.write_text(json.dumps(existing, indent=2) + "\n")
+    if not CURSOR_SETTINGS_LIVE.exists() or not CURSOR_SETTINGS_LIVE.is_symlink():
+        CURSOR_SETTINGS_LIVE.symlink_to(CURSOR_SETTINGS)
     print(f"updated Cursor terminal font to: {CURSOR_FONT} ({FONT_SIZE}pt)")
     return True
 

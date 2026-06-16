@@ -1,4 +1,65 @@
 {
+  "workbench.colorTheme": "Atom One Dark",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.fontSize": 14,
+  "security.workspace.trust.untrustedFiles": "open",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.stickyScroll.enabled": true,
+  "git.autofetch": true,
+  "prettier.useTabs": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "editor.minimap.enabled": false,
+  "cSpell.language": "en,es-ES",
+  "vsicons.dontShowNewVersionMessage": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "react.beautify.onSave": true,
+  "editor.formatOnSave": true,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "editor.cursorBlinking": "expand",
+  "editor.stickyScroll.defaultModel": "indentationModel",
+  "explorer.autoReveal": false,
+  "explorer.compactFolders": false,
+  "editor.hover.delay": 600,
+  "workbench.sideBar.location": "right",
+  "prettier.printWidth": 225,
+  "prettier.proseWrap": "never",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.guides.bracketPairs": "active",
+  "workbench.startupEditor": "none",
+  "workbench.editor.enablePreview": false,
+  "editor.maxTokenizationLineLength": 20000000,
+  "cody.commandCodeLenses": true,
+  "terminal.integrated.env.osx": {},
+  "console-ninja.showWhatsNew": false,
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "console-ninja.allowConsoleLogToTriggerPredictions": true,
+  "console-ninja.featureSet": "Community",
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
   "terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace",
-  "terminal.integrated.fontSize": 14
+  "terminal.integrated.fontSize": 14,
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Atom One Dark"
 }

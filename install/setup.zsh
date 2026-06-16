@@ -175,6 +175,10 @@ link_ssh_config() {
   chmod 600 "$HOME/.ssh/config"
 }
 
+install_cursor() {
+  zsh "$DOTFILES_DIR/install/cursor.zsh"
+}
+
 setup_version_managers() {
   log "Creating version manager directories..."
   mkdir -p "$HOME/.nvm" "$HOME/.pyenv" "$HOME/.goenv"
@@ -197,6 +201,7 @@ link_runcom
 link_oh_my_zsh_custom
 link_local_bin
 link_ssh_config
+install_cursor
 configure_terminal_fonts
 
 if $LINK_ONLY; then

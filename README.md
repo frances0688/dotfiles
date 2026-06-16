@@ -135,14 +135,14 @@ python3 install/configure-terminal-fonts.py
 | **iTerm2** | Settings → Profiles → Text → Font → **FiraCode Nerd Font** (14 pt) |
 | **Cursor** | `Cmd+,` → search **Terminal › Integrated: Font Family** → `'FiraCode Nerd Font', monospace` |
 
-Or open Cursor settings JSON (`Cmd+Shift+P` → **Preferences: Open User Settings (JSON)**):
+Cursor user settings, extensions, and plugins are managed from this repo (see [Cursor](#cursor)).
+
+Or open Cursor settings JSON (`Cmd+Shift+P` → **Preferences: Open User Settings (JSON)**) — symlinked to `config/cursor/settings.json`:
 
 ```json
 "terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace",
 "terminal.integrated.fontSize": 14
 ```
-
-Reference copy: `config/cursor/settings.json`
 
 ### Troubleshooting empty icon boxes
 
@@ -210,6 +210,24 @@ All config files live in this repo and are symlinked into place by `install/setu
 
 No private keys are stored or installed.
 
+### Cursor — `config/cursor/` → `~/Library/Application Support/Cursor/User/settings.json`
+
+| File | Purpose |
+|------|---------|
+| `settings.json` | Editor settings (theme, formatters, sidebar, terminal font, etc.) |
+| `extensions.txt` | Extension IDs installed via `cursor --install-extension` |
+| `plugins.json` | Cursor marketplace plugins to enable after install |
+
+Installed on bootstrap via `install/cursor.zsh` (`make cursor` to refresh).
+
+**Extensions (25):** Prettier, ESLint, GitLens, Tailwind CSS, Thunder Client, Code Spell Checker (+ Spanish), Live Server, vscode-icons, Atom One Dark, Remote SSH, and others listed in `extensions.txt`.
+
+**Plugins (enable manually in Cursor Settings → Plugins):** `1password`, `mongodb`, `superpowers` from the `cursor-public` marketplace.
+
+Some VS Code–only extensions (e.g. Material Theme, Live Share) are not available on Cursor's Open VSX registry and are omitted.
+
+---
+
 ### Scripts — `local/bin/` → `~/.local/bin/`
 
 | Script | Purpose |
@@ -233,7 +251,8 @@ These require your accounts and secrets — they are not automated:
 1. **1Password:** Sign in, create an SSH key, enable **Settings → Developer → Use the SSH agent**
 2. **GitHub SSH & signing:** Run `github-ssh-setup`
 3. **GitHub CLI:** Run `gh auth login`
-4. **Cursor:** Cmd+Shift+P → “Install 'cursor' command in PATH”
+4. **Cursor:** Cmd+Shift+P → “Install 'cursor' command in PATH”, then run `make cursor`
+5. **Cursor plugins:** Enable `1password`, `mongodb`, and `superpowers` in Cursor Settings → Plugins
 
 Node, Python, Go, and mongosh are installed automatically during bootstrap.
 
@@ -256,6 +275,7 @@ cd ~/.dotfiles
 make macos          # brew bundle + re-link configs + fonts + secret scan
 make link           # re-link configs + fonts
 make fonts          # iTerm2 + Cursor font setup only
+make cursor         # symlink Cursor settings + install extensions
 ```
 
 ---
@@ -267,12 +287,16 @@ make fonts          # iTerm2 + Cursor font setup only
 ├── remote-install.zsh       # One-line install entry point
 ├── install/
 │   ├── setup.zsh                      # Full bootstrap script
+│   ├── cursor.zsh                     # Cursor settings symlink + extensions
 │   ├── Brewfile                       # Homebrew formulae and casks
 │   ├── fonts.conf                     # Font name/size constants
 │   ├── fonts.zsh                      # Font install helpers
 │   └── configure-terminal-fonts.py    # iTerm2 + Cursor font automation
 ├── config/
-│   ├── cursor/settings.json           # Cursor terminal font defaults
+│   ├── cursor/
+│   │   ├── settings.json              # Cursor user settings (symlinked)
+│   │   ├── extensions.txt             # Extension IDs for cursor CLI
+│   │   └── plugins.json               # Cursor marketplace plugins
 │   ├── iterm2/DynamicProfiles/        # iTerm2 font profile overlay
 │   └── ssh/                           # SSH config (no private keys)
 ├── runcom/                            # .zshrc, .gitconfig, .p10k.zsh

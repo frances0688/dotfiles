@@ -1,0 +1,8 @@
+{
+  "marketplace": "cursor-public",
+  "plugins": [
+    "1password",
+    "mongodb",
+    "superpowers"
+  ]
+}
