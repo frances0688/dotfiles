@@ -1,0 +1,70 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+op_agent="${OP_SSH_AUTH_SOCK:-$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock}"
+
+echo "==> Checking 1Password SSH agent..."
+if [[ ! -S "$op_agent" ]]; then
+  echo "1Password SSH agent socket not found at:"
+  echo "  $op_agent"
+  echo "Enable it in 1Password → Settings → Developer → Use the SSH agent"
+  exit 1
+fi
+
+if ! SSH_AUTH_SOCK="$op_agent" ssh-add -l &>/dev/null; then
+  echo "No SSH keys available in 1Password."
+  echo "Create one: 1Password → New Item → SSH Key → Generate New Key (Ed25519)"
+  exit 1
+fi
+
+pubkey="$(SSH_AUTH_SOCK="$op_agent" ssh-add -L | head -1)"
+if [[ -z "$pubkey" ]]; then
+  echo "Could not read a public key from the 1Password SSH agent."
+  exit 1
+fi
+
+echo "==> Using key: $(print -r -- "$pubkey" | cut -c1-72)..."
+echo
+
+echo "==> Configuring Git commit signing..."
+git config --global user.signingkey "$pubkey"
+git config --global gpg.format ssh
+git config --global gpg.ssh.program "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+git config --global commit.gpgsign true
+
+echo "==> Testing GitHub SSH connection..."
+if ssh -o StrictHostKeyChecking=accept-new -T git@github.com 2>&1 | rg -q 'successfully authenticated'; then
+  echo "GitHub SSH authentication works."
+else
+  echo "GitHub SSH not working yet — add your public key to GitHub (step below)."
+fi
+
+if command -v gh &>/dev/null && gh auth status &>/dev/null; then
+  echo
+  echo "==> Adding SSH key to GitHub via gh..."
+  tmp="$(mktemp)"
+  print -r -- "$pubkey" > "$tmp"
+  host="$(scutil --get ComputerName 2>/dev/null || hostname)"
+  gh ssh-key add "$tmp" --title "$host ($(date +%Y-%m-%d))" --type authentication || {
+    echo "Could not add authentication key via gh."
+    echo "Run: gh auth refresh -h github.com -s admin:public_key"
+    echo "Or add the key manually at https://github.com/settings/keys"
+  }
+  gh ssh-key add "$tmp" --title "$host signing ($(date +%Y-%m-%d))" --type signing || \
+    echo "Signing key step skipped (may already exist — check GitHub → Settings → SSH keys)."
+  rm -f "$tmp"
+else
+  echo
+  echo "==> gh not authenticated — add this public key to GitHub manually:"
+  echo "    https://github.com/settings/keys"
+  echo
+  print -r -- "$pubkey"
+  echo
+  echo "Enable it for both Authentication and Signing."
+fi
+
+echo
+echo "==> Done. Verify with:"
+echo "    ssh -T git@github.com"
+echo "    git commit --allow-empty -m 'test signed commit'"
+echo "    git log -1 --show-signature"
