@@ -46,7 +46,20 @@ Installed via `install/Brewfile` (`brew bundle`):
 | iTerm2 | `iterm2` |
 | FiraCode Nerd Font | `font-fira-code-nerd-font` |
 
-After install, set **FiraCode Nerd Font** in iTerm2 (Profiles → Text → Font) and Cursor (Settings → Terminal → Font) for Powerlevel10k icons.
+After install, set **FiraCode Nerd Font** in iTerm2 (Profiles → Text → Font).
+
+**Cursor** has no separate font picker — use Settings JSON:
+
+1. `Cmd+Shift+P` → **Preferences: Open User Settings (JSON)**
+2. Add:
+
+```json
+"terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace"
+```
+
+Or search settings (`Cmd+,`) for **Terminal › Integrated: Font Family**.
+
+This repo ships the same config in `config/cursor/settings.json` (applied on bootstrap if no settings exist).
 
 ### CLI tools (Homebrew formulae)
 

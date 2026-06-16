@@ -173,6 +173,23 @@ link_ssh_config() {
   chmod 600 "$HOME/.ssh/config"
 }
 
+link_cursor_settings() {
+  local src="$DOTFILES_DIR/config/cursor/settings.json"
+  local dest="$HOME/Library/Application Support/Cursor/User/settings.json"
+  if [[ ! -f "$src" ]]; then
+    return 0
+  fi
+  log "Configuring Cursor terminal font..."
+  mkdir -p "${dest:h}"
+  if [[ ! -f "$dest" ]]; then
+    cp "$src" "$dest"
+    return 0
+  fi
+  if ! rg -q 'terminal.integrated.fontFamily' "$dest" 2>/dev/null; then
+    warn "Add terminal font to Cursor settings (see config/cursor/settings.json)"
+  fi
+}
+
 setup_version_managers() {
   log "Creating version manager directories..."
   mkdir -p "$HOME/.nvm" "$HOME/.pyenv" "$HOME/.goenv"
@@ -195,8 +212,9 @@ link_runcom
 link_oh_my_zsh_custom
 link_local_bin
 link_ssh_config
+link_cursor_settings
 if ! $LINK_ONLY; then
-  warn "Set terminal font to 'FiraCode Nerd Font' in iTerm2 and Cursor (Settings → Terminal → Font)."
+  warn "Restart Cursor terminal tabs after font changes (kill and open new terminal)."
 fi
 if $LINK_ONLY; then
   setup_version_managers

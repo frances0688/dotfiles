@@ -15,6 +15,13 @@
   typeset -g POWERLEVEL9K_MODE=nerdfont-complete
   typeset -g POWERLEVEL9K_ICON_PADDING=none
 
+  # No segment icons — matches dst (plain text). Avoids missing-glyph boxes until
+  # the terminal font is set to "FiraCode Nerd Font" in iTerm2/Cursor.
+  typeset -g POWERLEVEL9K_DIR_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION=''
+  typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=''
+
   # dst layout:
   #   user@host: path git
   #   $
