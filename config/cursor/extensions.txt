@@ -15,7 +15,6 @@ ionutvmi.path-autocomplete
 ms-vscode.live-server
 rangav.vscode-thunder-client
 ritwickdey.liveserver
-sourcegraph.cody-ai
 streetsidesoftware.code-spell-checker
 streetsidesoftware.code-spell-checker-spanish
 syler.sass-indented

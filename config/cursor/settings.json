@@ -46,7 +46,6 @@
   "workbench.startupEditor": "none",
   "workbench.editor.enablePreview": false,
   "editor.maxTokenizationLineLength": 20000000,
-  "cody.commandCodeLenses": true,
   "terminal.integrated.env.osx": {},
   "console-ninja.showWhatsNew": false,
   "[scss]": {
